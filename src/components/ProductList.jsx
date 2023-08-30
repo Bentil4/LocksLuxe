@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import Card from './Card';
 
-export function ProductList({ wigsData }) {
+export function ProductList({ ProductsData }) {
+	// State to hold the search term entered in the input field
 	const [searchTerm, setSearchTerm] = useState('');
 
+	// Event handler for updating the search term state
 	const handleSearch = (event) => {
 		setSearchTerm(event.target.value);
 	};
 
-	const filteredWigs = wigsData.filter((wig) =>
-		wig.wig_name.toLowerCase().includes(searchTerm.toLowerCase()),
+	// Filter the Products based on the search term
+	const filteredProducts = ProductsData.filter((Product) =>
+		Product.name.toLowerCase().includes(searchTerm.toLowerCase()),
 	);
+
+	
 
 	return (
 		<>
+			{/* Input field for searching Products */}
 			<div className='form-control w-full flex items-center justify-center'>
 				<input
 					type='text'
@@ -23,23 +29,28 @@ export function ProductList({ wigsData }) {
 					className='input max-w-[30rem] input-bordered w-full'
 				/>
 			</div>
-			<div className='justify-center grid lg:grid-cols-4 max-w-screen-2xl selection: md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 p-5'>
-				{filteredWigs.length === 0 ? (
-					<div className='w-full left-0 flex justify-center absolute '>
+
+			{/* Display the filtered Products in a grid layout */}
+			<div className='justify-center grid px-5 lg:grid-cols-4 max-w-screen-xl md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4'>
+				{filteredProducts.length === 0 ? (
+					// If no Products match the search term, display a message
+					<div className='w-full left-0 flex justify-center absolute'>
 						<p className='font-semibold text-2xl capitalize'>
-							🥶Sorry "{searchTerm}" not found.
+							item not found.
 						</p>
 					</div>
 				) : (
-					filteredWigs.map((wig) => (
+					// Otherwise, map through the filtered Products and render the Card component
+					filteredProducts.map((Product) => (
 						<Card
-							key={wig.wig_id}
-							name={wig.wig_name}
-							price={wig.price}
-							image={wig.image_url}
-							description={
-								wig.description.slice(0, 50) + '...'
-							}
+							key={Product.id}
+							id={Product.id}
+							name={Product.name}
+							price={Product.price}
+							description={Product.description}
+							rating={Product.rating}
+							image={Product.image}
+							availability={Product.availability}
 						/>
 					))
 				)}
